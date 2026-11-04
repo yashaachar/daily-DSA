@@ -1,0 +1,41 @@
+//Time: O(m × n) · Space: O(m × n) worst case recursion stack
+
+class Solution {
+public:
+    int m, n;
+
+    int dfs(vector<vector<int>>& grid, int r, int c) {
+        if (r < 0 || c < 0 || r >= m || c >= n ||
+            grid[r][c] == 0)
+            return 0;
+
+        grid[r][c] = 0;
+
+        int area = 1;
+
+        area += dfs(grid, r + 1, c);
+        area += dfs(grid, r - 1, c);
+        area += dfs(grid, r, c + 1);
+        area += dfs(grid, r, c - 1);
+
+        return area;
+    }
+
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        m = grid.size();
+        n = grid[0].size();
+
+        int maxArea = 0;
+
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                if (grid[r][c] == 1) {
+                    int area = dfs(grid, r, c);
+                    maxArea = max(maxArea, area);
+                }
+            }
+        }
+
+        return maxArea;
+    }
+};
